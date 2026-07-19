@@ -1,5 +1,5 @@
 {
-  "name": "portfolio-mae-va",
+  "name": "portfolio-maeva",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -9,12 +9,19 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint:fix": "astro check",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@sanity/client": "^7.23.2",
     "@sanity/image-url": "^2.1.1",
     "astro": "^7.1.1",
     "groq": "^6.5.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "prettier": "^3.9.5",
+    "typescript": "^6.0.3"
   }
 }

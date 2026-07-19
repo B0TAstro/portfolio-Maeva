@@ -1,11 +1,298 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import {urlForImage} from '../lib/sanity.image';
+import {getHomePage} from '../lib/sanity.queries';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const home = await getHomePage();
+const projects = home?.selectedProjects ?? [];
 ---
 
 <Layout>
-	<Welcome />
+	<main class="page-shell">
+		<section class="hero">
+			<div class="hero-content">
+				<p class="eyebrow">Portfolio</p>
+				<h1>{home?.heroTitle ?? 'Portfolio Maeva'}</h1>
+				<p class="hero-subtitle">
+					{home?.heroSubtitle ?? 'Une base Astro connectee a Sanity, prete a personnaliser.'}
+				</p>
+			</div>
+
+			{
+				home?.heroImage && (
+					<img
+						class="hero-image"
+						src={urlForImage(home.heroImage).width(900).height(1100).fit('crop').url()}
+						alt={home.heroImage.alt ?? ''}
+					/>
+				)
+			}
+		</section>
+
+		<section class="section about-section" id="a-propos">
+			<p class="section-label">A propos</p>
+			<h2>{home?.aboutTitle ?? 'Une section editable depuis Sanity'}</h2>
+			<p>{home?.aboutText ?? 'Cree un document Accueil dans le Studio pour remplacer ce texte.'}</p>
+		</section>
+
+		<section class="section" id="projets">
+			<div class="section-heading">
+				<p class="section-label">Projets</p>
+				<h2>Selection</h2>
+			</div>
+
+			{
+				projects.length > 0 ? (
+					<div class="project-grid">
+						{projects.map((project) => (
+							<article class="project-card">
+								{project.coverImage && (
+									<img
+										class="project-image"
+										src={urlForImage(project.coverImage).width(900).height(650).fit('crop').url()}
+										alt={project.coverImage.alt ?? ''}
+									/>
+								)}
+								<div class="project-content">
+									{project.category && <p class="project-category">{project.category}</p>}
+									<h3>{project.title}</h3>
+									{project.description && <p>{project.description}</p>}
+									{project.url && (
+										<a href={project.url} target="_blank" rel="noreferrer">
+											Voir le projet
+										</a>
+									)}
+								</div>
+							</article>
+						))}
+					</div>
+				) : (
+					<p class="empty-state">
+						Ajoute des documents Projet dans Sanity, puis reference-les dans le document Accueil.
+					</p>
+				)
+			}
+		</section>
+
+		<section class="contact" id="contact">
+			<p class="section-label">Contact</p>
+			<h2>{home?.contactTitle ?? 'On construit la suite ?'}</h2>
+			{
+				home?.contactEmail ? (
+					<a class="contact-link" href={`mailto:${home.contactEmail}`}>{home.contactEmail}</a>
+				) : (
+					<p>Ajoute un email de contact dans Sanity.</p>
+				)
+			}
+
+			{
+				home?.socialLinks && home.socialLinks.length > 0 && (
+					<div class="social-links">
+						{home.socialLinks.map((link) => (
+							<a href={link.url} target="_blank" rel="noreferrer">
+								{link.label}
+							</a>
+						))}
+					</div>
+				)
+			}
+		</section>
+	</main>
 </Layout>
+
+<style>
+	.page-shell {
+		min-height: 100vh;
+		padding: 24px;
+	}
+
+	.hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+		gap: 24px;
+		align-items: stretch;
+		min-height: calc(100vh - 48px);
+	}
+
+	.hero-content,
+	.section,
+	.contact {
+		border: 1px solid rgba(23, 23, 23, 0.14);
+		border-radius: 28px;
+		background: rgba(255, 255, 255, 0.45);
+	}
+
+	.hero-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: clamp(32px, 7vw, 88px);
+	}
+
+	.eyebrow,
+	.section-label,
+	.project-category {
+		margin: 0 0 16px;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	h1,
+	h2,
+	h3,
+	p {
+		margin-top: 0;
+	}
+
+	h1 {
+		max-width: 11ch;
+		margin-bottom: 24px;
+		font-size: clamp(4rem, 14vw, 13rem);
+		line-height: 0.82;
+		letter-spacing: -0.08em;
+	}
+
+	h2 {
+		max-width: 12ch;
+		margin-bottom: 24px;
+		font-size: clamp(2.6rem, 8vw, 7rem);
+		line-height: 0.9;
+		letter-spacing: -0.06em;
+	}
+
+	h3 {
+		margin-bottom: 12px;
+		font-size: clamp(1.7rem, 4vw, 3rem);
+		line-height: 0.95;
+		letter-spacing: -0.04em;
+	}
+
+	.hero-subtitle,
+	.section p,
+	.contact p,
+	.project-content p {
+		max-width: 62ch;
+		font-size: clamp(1rem, 2vw, 1.25rem);
+		line-height: 1.6;
+	}
+
+	.hero-image,
+	.project-image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 28px;
+	}
+
+	.section,
+	.contact {
+		margin-top: 24px;
+		padding: clamp(32px, 7vw, 88px);
+	}
+
+	.about-section {
+		display: grid;
+		grid-template-columns: minmax(180px, 0.4fr) minmax(0, 1fr);
+		gap: 32px;
+	}
+
+	.about-section h2 {
+		grid-column: 1;
+	}
+
+	.about-section p:last-child {
+		grid-column: 2;
+		align-self: end;
+	}
+
+	.section-heading {
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		gap: 24px;
+	}
+
+	.project-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 18px;
+	}
+
+	.project-card {
+		overflow: hidden;
+		border: 1px solid rgba(23, 23, 23, 0.14);
+		border-radius: 24px;
+		background: #fffaf2;
+	}
+
+	.project-image {
+		aspect-ratio: 4 / 3;
+		height: auto;
+		border-radius: 0;
+	}
+
+	.project-content {
+		padding: 24px;
+	}
+
+	.project-content a,
+	.contact-link,
+	.social-links a {
+		font-weight: 800;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 5px;
+	}
+
+	.empty-state {
+		padding: 24px;
+		border-radius: 18px;
+		background: #fffaf2;
+	}
+
+	.contact {
+		min-height: 48vh;
+	}
+
+	.contact-link {
+		display: inline-block;
+		margin-top: 8px;
+		font-size: clamp(1.4rem, 4vw, 4rem);
+		letter-spacing: -0.04em;
+	}
+
+	.social-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 16px;
+		margin-top: 32px;
+	}
+
+	@media (max-width: 780px) {
+		.page-shell {
+			padding: 14px;
+		}
+
+		.hero,
+		.about-section,
+		.project-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.hero {
+			min-height: auto;
+		}
+
+		.hero-image {
+			aspect-ratio: 4 / 5;
+			height: auto;
+		}
+
+		.about-section h2,
+		.about-section p:last-child {
+			grid-column: auto;
+		}
+	}
+</style>
