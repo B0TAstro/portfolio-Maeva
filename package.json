@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint:fix": "astro check",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@sanity/client": "^7.23.2",
