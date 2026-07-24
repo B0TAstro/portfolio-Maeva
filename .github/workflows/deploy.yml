@@ -16,6 +16,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  # Temp while vitrine site is on GitHub Pages
+  PUBLIC_BASE_PATH: /portfolio-Maeva
   PUBLIC_SANITY_PROJECT_ID: ${{ vars.PUBLIC_SANITY_PROJECT_ID }}
   PUBLIC_SANITY_DATASET: ${{ vars.PUBLIC_SANITY_DATASET }}
   PUBLIC_SANITY_API_VERSION: ${{ vars.PUBLIC_SANITY_API_VERSION }}
