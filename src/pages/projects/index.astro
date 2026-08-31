@@ -1,0 +1,84 @@
+---
+import ContactSection from '../../components/ContactSection.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getHomePage, getProjects } from '../../lib/sanity.queries';
+
+const [projects, home] = await Promise.all([getProjects(), getHomePage()]);
+---
+
+<Layout>
+	<main>
+		<section class="page-hero">
+			<p class="label">[projects]</p>
+			<h1>Projects</h1>
+			<p class="subtitle">Selected works</p>
+			<p>Une liste de projets qui servira de base pour construire chaque cas en detail.</p>
+		</section>
+
+		<section class="project-list" aria-label="Liste des projets">
+			{
+				projects.length > 0 ? (
+					projects.map((project) => <ProjectCard project={project} />)
+				) : (
+					<p class="empty-state">Ajoute des documents Projet dans Sanity.</p>
+				)
+			}
+		</section>
+
+		<ContactSection
+			title={home?.contactTitle}
+			email={home?.contactEmail}
+			socialLinks={home?.socialLinks}
+		/>
+	</main>
+</Layout>
+
+<style>
+	.page-hero,
+	.project-list {
+		padding: clamp(48px, 8vw, 112px) clamp(18px, 5vw, 64px);
+	}
+
+	.page-hero {
+		display: grid;
+		min-height: 58vh;
+		align-content: end;
+	}
+
+	.label,
+	h1,
+	p {
+		margin: 0;
+	}
+
+	.label {
+		margin-bottom: 24px;
+		color: #e20d0d;
+		font-weight: 800;
+	}
+
+	h1 {
+		font-size: clamp(4rem, 15vw, 14rem);
+		font-style: italic;
+		line-height: 0.82;
+		letter-spacing: -0.08em;
+	}
+
+	.subtitle {
+		margin-top: 28px;
+		font-size: clamp(1.3rem, 3vw, 2.4rem);
+		font-weight: 800;
+	}
+
+	.page-hero p:last-child {
+		max-width: 70ch;
+		margin-top: 20px;
+		line-height: 1.6;
+	}
+
+	.empty-state {
+		padding: 32px;
+		background: #d1d1d1;
+	}
+</style>

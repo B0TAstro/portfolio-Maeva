@@ -1,0 +1,110 @@
+---
+import ContactSection from '../components/ContactSection.astro';
+import Layout from '../layouts/Layout.astro';
+import { getHomePage } from '../lib/sanity.queries';
+
+const home = await getHomePage();
+---
+
+<Layout>
+	<main>
+		<section class="page-hero">
+			<p class="label">[services]</p>
+			<h1>Services</h1>
+			<p class="subtitle">What I do</p>
+			<p>Une base simple pour presenter les offres, les methodes et les expertises.</p>
+		</section>
+
+		<section class="service-grid" aria-label="Services principaux">
+			<article><strong>[1]</strong><span>graphisme</span></article>
+			<article><strong>[2]</strong><span>identite visuelle</span></article>
+			<article><strong>[3]</strong><span>edition</span></article>
+			<article><strong>[4]</strong><span>direction artistique</span></article>
+		</section>
+
+		<ContactSection
+			title={home?.contactTitle}
+			email={home?.contactEmail}
+			socialLinks={home?.socialLinks}
+		/>
+	</main>
+</Layout>
+
+<style>
+	.page-hero {
+		min-height: 62vh;
+		padding: clamp(56px, 10vw, 128px) clamp(18px, 5vw, 64px);
+		text-align: center;
+	}
+
+	.label,
+	h1,
+	p {
+		margin: 0;
+	}
+
+	.label {
+		margin-bottom: 24px;
+		color: #e20d0d;
+		font-weight: 800;
+	}
+
+	h1 {
+		font-size: clamp(4rem, 14vw, 13rem);
+		font-style: italic;
+		line-height: 0.82;
+		letter-spacing: -0.08em;
+	}
+
+	.subtitle {
+		margin-top: 28px;
+		font-size: clamp(1.3rem, 3vw, 2.4rem);
+		font-weight: 800;
+	}
+
+	.page-hero p:last-child {
+		max-width: 70ch;
+		margin: 20px auto 0;
+		line-height: 1.6;
+	}
+
+	.service-grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 24px;
+		padding: clamp(40px, 7vw, 96px) clamp(18px, 5vw, 64px);
+		background: #d1d1d1;
+	}
+
+	article {
+		display: grid;
+		gap: 12px;
+		min-height: 180px;
+		align-content: center;
+		text-align: center;
+	}
+
+	strong {
+		color: #e20d0d;
+		font-size: clamp(3rem, 8vw, 7rem);
+		font-style: italic;
+		font-weight: 400;
+		line-height: 1;
+	}
+
+	span {
+		font-weight: 800;
+	}
+
+	@media (max-width: 900px) {
+		.service-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 520px) {
+		.service-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

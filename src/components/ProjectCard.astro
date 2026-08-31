@@ -1,0 +1,85 @@
+---
+import { urlForImage } from '../lib/sanity.image';
+import type { Project } from '../types/sanity';
+
+type Props = {
+	project: Project;
+};
+
+const { project } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const href = project.slug ? `${base}projects/${project.slug}` : `${base}projects`;
+---
+
+<article class="project-card">
+	<a href={href}>
+		{
+			project.coverImage && (
+				<img
+					class="project-image"
+					src={urlForImage(project.coverImage).width(1000).height(720).fit('crop').url()}
+					alt={project.coverImage.alt ?? ''}
+				/>
+			)
+		}
+		<div class="project-content">
+			<p class="meta">{project.category ?? 'projet'} {project.year ? `- ${project.year}` : ''}</p>
+			<h2>{project.title}</h2>
+			{project.description && <p>{project.description}</p>}
+		</div>
+	</a>
+</article>
+
+<style>
+	.project-card {
+		border-top: 1px solid rgba(23, 23, 23, 0.22);
+	}
+
+	a {
+		display: grid;
+		grid-template-columns: minmax(160px, 0.45fr) minmax(0, 1fr);
+		gap: clamp(18px, 5vw, 72px);
+		align-items: center;
+		padding: 28px 0;
+		text-decoration: none;
+	}
+
+	.project-image {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		background: #d1d1d1;
+	}
+
+	.meta,
+	h2,
+	p {
+		margin: 0;
+	}
+
+	.meta {
+		margin-bottom: 16px;
+		font-size: 0.76rem;
+		font-weight: 800;
+		text-transform: lowercase;
+	}
+
+	h2 {
+		margin-bottom: 16px;
+		font-size: clamp(2rem, 7vw, 7rem);
+		font-style: italic;
+		line-height: 0.88;
+		letter-spacing: -0.06em;
+	}
+
+	p {
+		max-width: 62ch;
+		line-height: 1.6;
+	}
+
+	@media (max-width: 760px) {
+		a {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

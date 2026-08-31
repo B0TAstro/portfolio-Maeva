@@ -2,6 +2,7 @@ import type { SanityImageSource } from "@sanity/image-url";
 
 export type SanityImage = SanityImageSource & {
   alt?: string | null;
+  caption?: string | null;
 };
 
 export type Project = {
@@ -9,8 +10,12 @@ export type Project = {
   title: string;
   slug?: string;
   category?: string;
+  year?: string;
+  subtitle?: string;
   description?: string;
+  paragraph?: string;
   coverImage?: SanityImage;
+  gallery?: SanityImage[];
   url?: string;
 };
 

@@ -1,0 +1,49 @@
+---
+const base = import.meta.env.BASE_URL;
+
+function pathTo(path: string) {
+	return `${base}${path.replace(/^\//, '')}`;
+}
+---
+
+<footer class="site-footer">
+	<nav aria-label="Navigation secondaire">
+		<a href={pathTo('/')}>home</a>
+		<a href={pathTo('/services')}>services</a>
+		<a href={pathTo('/projects')}>projects</a>
+	</nav>
+	<p>maeva scoresia - 2026</p>
+</footer>
+
+<style>
+	.site-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 28px clamp(18px, 5vw, 64px);
+		font-size: 0.78rem;
+		text-transform: lowercase;
+	}
+
+	nav {
+		display: flex;
+		gap: 14px;
+	}
+
+	a {
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	p {
+		margin: 0;
+	}
+
+	@media (max-width: 640px) {
+		.site-footer {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+</style>

@@ -1,3 +1,8 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
 <!doctype html>
 <html lang="fr">
 	<head>
@@ -9,7 +14,9 @@
 		<title>Portfolio Maeva</title>
 	</head>
 	<body>
+		<Header />
 		<slot />
+		<Footer />
 	</body>
 </html>
 
@@ -34,5 +41,10 @@
 
 	a {
 		color: inherit;
+	}
+
+	img {
+		display: block;
+		max-width: 100%;
 	}
 </style>

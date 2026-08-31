@@ -1,3 +1,58 @@
 ---
-return Astro.redirect(import.meta.env.PUBLIC_SANITY_STUDIO_URL ?? 'http://localhost:3333');
+import Layout from '../layouts/Layout.astro';
+
+const studioUrl = import.meta.env.PUBLIC_SANITY_STUDIO_URL ?? 'http://localhost:3333';
 ---
+
+<Layout>
+	<main class="admin-page">
+		<p class="label">[admin]</p>
+		<h1>Sanity Studio</h1>
+		<p>Le Studio est une application separee. Ouvre-le dans un nouvel onglet.</p>
+		<a href={studioUrl} target="_blank" rel="noopener noreferrer">ouvrir le Studio</a>
+	</main>
+</Layout>
+
+<style>
+	.admin-page {
+		display: grid;
+		min-height: 70vh;
+		place-content: center;
+		padding: clamp(40px, 8vw, 96px) clamp(18px, 5vw, 64px);
+		text-align: center;
+	}
+
+	.label,
+	h1,
+	p {
+		margin: 0;
+	}
+
+	.label {
+		margin-bottom: 18px;
+		color: #e20d0d;
+		font-weight: 800;
+	}
+
+	h1 {
+		font-size: clamp(3.5rem, 12vw, 11rem);
+		font-style: italic;
+		line-height: 0.86;
+		letter-spacing: -0.08em;
+	}
+
+	p {
+		max-width: 52ch;
+		margin: 24px auto;
+		line-height: 1.6;
+	}
+
+	a {
+		justify-self: center;
+		padding: 12px 18px;
+		border: 1px solid currentColor;
+		border-radius: 999px;
+		font-weight: 800;
+		text-decoration: none;
+	}
+</style>

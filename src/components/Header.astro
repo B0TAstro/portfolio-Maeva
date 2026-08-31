@@ -1,0 +1,63 @@
+---
+const base = import.meta.env.BASE_URL;
+
+function pathTo(path: string) {
+	return `${base}${path.replace(/^\//, '')}`;
+}
+---
+
+<header class="site-header">
+	<a class="brand" href={pathTo('/')}>[maeva scoresia]</a>
+	<nav aria-label="Navigation principale">
+		<a href={pathTo('/')}>home</a>
+		<a href={pathTo('/services')}>services</a>
+		<a href={pathTo('/projects')}>projects</a>
+		<a class="admin-link" href={pathTo('/admin')}>admin</a>
+	</nav>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 18px clamp(18px, 5vw, 64px);
+		background: rgba(247, 242, 234, 0.86);
+		backdrop-filter: blur(18px);
+	}
+
+	.brand,
+	nav a {
+		font-size: 0.82rem;
+		font-weight: 700;
+		text-decoration: none;
+		text-transform: lowercase;
+	}
+
+	nav {
+		display: flex;
+		align-items: center;
+		gap: clamp(12px, 3vw, 28px);
+	}
+
+	.admin-link {
+		padding: 8px 12px;
+		border: 1px solid currentColor;
+		border-radius: 999px;
+	}
+
+	@media (max-width: 640px) {
+		.site-header {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		nav {
+			flex-wrap: wrap;
+		}
+	}
+</style>
